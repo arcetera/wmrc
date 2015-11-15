@@ -55,21 +55,43 @@ network() {
 nowplaying() {
         cur=`mpc current`
           test "$1" = "scroll" && PARSER='skroll -n20 -d0.5 -r' || PARSER='cat'
-          test -n "$cur" && $PARSER <<< $cur || echo "- stopped -"
+          test -n "$cur" && $PARSER <<< $cur || echo ""
 }
 
 windowid() {
         pfw
 }
 
+group() {
+        grp=`mgfw -g $(pfw)`
+        if [ $grp == 1 ]
+        then
+                echo "1 - - - -"
+        elif [ $grp == 2 ]
+        then
+                echo "- 2 - - -"
+        elif [ $grp == 3 ]
+        then
+                echo "- - 3 - -"
+        elif [ $grp == 4 ]
+        then
+                echo "- - - 4 -"
+        elif [ $grp == 5 ]
+        then
+                echo "- - - - 5"
+        else
+                echo "- - - - -"
+        fi
+}
+
 # This loop will fill a buffer with our infos, and output it to stdout.
 while :; do
     buf=""
     buf="${buf} $(nowplaying)"
-    buf="${buf} %{r}$(clock) / $(battery)"
+    buf="${buf} %{c}$(group)"
+    buf="${buf} %{r}$(clock) / $(battery) / $(windowid)"
 
     echo $buf
     # use `nowplaying scroll` to get a scrolling output!
     #sleep 1 # The HUD will be updated every second
 done
-
