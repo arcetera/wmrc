@@ -27,7 +27,7 @@ while IFS=: read ev wid; do
 
         # focus next window when deleting focused window
         18) wattr $(pfw) || wfw prev 2>/dev/null
-            test -z "$(lsw)" && blur 0 &
+            test -z "$(lsw)" &
             ;;
 
         #entering window
