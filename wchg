@@ -1,0 +1,36 @@
+#!/bin/sh
+#                  __                  
+#                 /\ \                 
+# __  __  __   ___\ \ \___      __     
+#/\ \/\ \/\ \ /'___\ \  _ `\  /'_ `\   
+#\ \ \_/ \_/ /\ \__/\ \ \ \ \/\ \L\ \  
+# \ \___x___/\ \____\\ \_\ \_\ \____ \ 
+#  \/__//__/  \/____/ \/_/\/_/\/___L\ \
+#                               /\____/
+#                               \_/__/ 
+# wchg - Window ChaNGe - perform actions when window status changes
+
+while IFS=: read ev wid; do
+    case $ev in
+        # window creation
+        16) wattr o $wid || {
+                test "$(lsw)" = "$wid" &
+                # cw $wid this is horribly broken and doesn't work
+            }
+            ;;
+
+        # mapping requests
+        19) wattr o $wid || wfw $wid
+        chwb -s 2 -c 515151 $(pfw)
+        #chwb2 -I 515151 -O 393939 -i 3 -o 2 $(pfw) 
+        ;;
+
+        # focus next window when deleting focused window
+        18) wattr $(pfw) || wfw prev 2>/dev/null
+            test -z "$(lsw)" && blur 0 &
+            ;;
+
+        #entering window
+        7) wattr o $wid || wfw $wid ;;
+    esac
+done

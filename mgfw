@@ -1,0 +1,86 @@
+#!/bin/sh 
+#                     ___              
+#                   /'___\             
+#  ___ ___      __ /\ \__/ __  __  __  
+#/' __` __`\  /'_ `\ \ ,__/\ \/\ \/\ \ 
+#/\ \/\ \/\ \/\ \L\ \ \ \_\ \ \_/ \_/ \
+#\ \_\ \_\ \_\ \____ \ \_\ \ \___x___/'
+# \/_/\/_/\/_/\/___L\ \/_/  \/__//__/  
+#               /\____/                
+#               \_/__/                 
+# mgfw - manage groups for windows
+
+GRPROOT=/tmp/groups/
+GRPNUM=5
+
+usage() {
+        echo "$(basename $0) [-adsth <gid>]"
+}
+
+addtgrp() {
+        :> $GRPROOT/$2/$1
+        show_group $2
+}
+
+removefgrp() {
+    test "$2" = "all" \
+        && rm -f $GRPROOT/*/$1 \
+        || rm -f $GRPROOT/$2/$1
+}
+
+findgrp() {
+        file=$(find $GRPROOT -name "$1")
+        test -n "$file" && basename $(dirname $file)
+}
+
+showgrp() {
+        for file in $GRPROOT/$1/*; do
+                wid=$(basename $file)
+                mapw -m $wid
+        done
+        echo 1 > $GSTATUS/$1
+}
+
+hidegrp() {
+        for file in $GRPROOT/$1/*; do
+                wid=$(basename $file)
+                mapw -u $wid
+        done
+}
+
+togggrp() {
+    wid=$(ls -1 $GRPROOT/$1 | sed 1q)
+
+    test -z "$wid" && return
+    wattr m $wid \
+        && hide_group $1 \
+        || show_group $1
+}
+
+cgrps() {
+        for gid in $(seq 1 $GRPNUM ); do
+                test -d $GRPROOT/$gid || mkdir -p $GRPROOT/$gid
+        done
+
+        for file in $(find $GRPROOT -type f); do
+                wid=$(basename $file)
+                wattr $wid || rm -f $file
+        done
+}
+
+cgrps
+
+while getopts ":a:wd:gm:t:h:" opt; do
+        case $opt in
+                a) addtgrp `pfw` $OPTARG ;;
+                d) removefgrp `pfw` $OPTARG ;;
+                g) findgrp `pfw` ;;
+                s) showgrp $OPTARG ;;
+                t) togggrp $OPTARG ;;
+                h) hidegrp $OPTARG ;;
+                *) usage && exit 0;;
+        esac
+done
+
+# in case no argument is given, display the whole tree
+test $# -eq 0 && tree --noreport $GRPROOT

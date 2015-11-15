@@ -1,0 +1,57 @@
+#!/bin/sh
+#              ___    
+#            /'___\             
+# __  __  __/\ \__/ __  __  __  
+#/\ \/\ \/\ \ \ ,__/\ \/\ \/\ \ 
+#\ \ \_/ \_/ \ \ \_\ \ \_/ \_/ \
+# \ \___x___/'\ \_\ \ \___x___/'
+#  \/__//__/   \/_/  \/__//__/                                 
+# wfw - window focus wrapper
+
+BW=${BW:-2}                    # border width
+#BWI=${BWI:-3}                 # inner border width
+#BWO=${BWO:-2}                 # outer border width
+ACTIVE=${ACTIVE:-0x515151}     # active border color
+INACTIVE=${INACTIVE:-0xa09f93} # inactive border color
+#OUTER=${OUTER--0x393939}      # outer border color
+
+# get current window id
+CUR=$(pfw)
+
+usage() {
+    echo "usage: $(basename $0) <next|prev|wid>" >&2
+    exit 1
+}
+
+setborder() {
+    ROOT=$(lsw -r)
+
+    # check that window exists and shouldn't be ignored
+    wattr $2 || return
+    wattr o $2 && return
+
+    # do not modify border of fullscreen windows
+    test "$(wattr xywh $2)" = "$(wattr xywh $ROOT)" && return
+
+    case $1 in
+        active)   chwb -s $BW -c $ACTIVE $2 ;;
+        #chwb2 -I $ACTIVE -O $OUTER -i $BWI -o $BWO $2 ;;
+        inactive) chwb -s $BW -c $INACTIVE $2 ;;
+        #chwb2 -I $INACTIVE -O $OUTER -i $BWI -o $BWO $2 ;;
+    esac
+}
+
+case $1 in
+    next) wid=$(lsw|grep -v $CUR|sed '1 p;d') ;;
+    prev) wid=$(lsw|grep -v $CUR|sed '$ p;d') ;;
+    0x*) wattr $1 && wid=$1 ;;
+    *) usage ;;
+esac
+
+# exit if we can't find another window to focus
+test -z "$wid" && { echo "$(basename $0): no window to focus" >&2; exit 1; }
+
+chwso -r $wid           # put it on top of the stack
+wtf $wid                # set focus on it
+setborder active $wid   # activate the new window
+setborder inactive $CUR # set inactive border on current window
