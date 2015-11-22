@@ -66,9 +66,9 @@ panel() {
 
 while :; do
     buf=""
-    buf="${buf} %{B#f0c074}%{F#161719} ♪ %{F-}%{B-} $(nowplaying) %{B#f0c074}%{F#161719}$(npcommand)%{F-} $(panel)"
+    buf="${buf} %{B#f0c074}%{F#161719}  %{F-}%{B-} $(nowplaying) %{B#f0c074}%{F#161719}$(npcommand)%{F-} $(panel)"
     buf="${buf} %{c}$(group)"
-    buf="${buf} %{r}%{B#81a2be}%{F#161719} ⬤ %{F-}%{B-} $(clock) %{B#89c75c}%{F#161719} ☐ %{F-}%{B-} $(battery)%"
+    buf="${buf} %{r}%{B#81a2be}%{F#161719}  %{F-}%{B-} $(clock) %{B#89c75c}%{F#161719}  %{F-}%{B-} $(battery)%"
 
     echo $buf
 done
