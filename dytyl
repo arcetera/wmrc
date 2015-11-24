@@ -1,0 +1,79 @@
+#!/bin/sh
+#  __          __            ___      
+# /\ \        /\ \__        /\_ \     
+# \_\ \  __  _\ \ ,_\ __  __\//\ \    
+# /'_` \/\ \/\ \ \ \//\ \/\ \ \ \ \   
+#/\ \L\ \ \ \_\ \ \ \\ \ \_\ \ \_\ \_ 
+#\ \___,_\/`____ \ \__\/`____ \/\____\
+# \/__,_ /`/___/> \/__/`/___/> \/____/
+#            /\___/       /\___/      
+#            \/__/        \/__/   
+# dynamic tiling 
+
+# usage function
+usage() {
+        echo "usage: $(basename $0) <default|full>"
+        exit
+}
+
+# default values for gaps
+PANEL=${PANEL:-5}
+GAP=${GAP:-15}
+
+# get current window id and its borderwidth
+PFW=$(pfw)
+BW=$(wattr b $PFW)
+
+# get root window's size
+ROOT=$(lsw -r)
+SW=$(wattr w $ROOT)
+SH=$(wattr h $ROOT)
+
+# get the master area
+MASTER=$((SW/2))
+
+# get the number of windows to put in the stacking area
+MAX=$(lsw|grep -v $PFW|wc -l)
+
+# calculate usable screen size (without borders and gaps)
+SW=$((SW - GAP - 2*BW))
+SH=$((SH - GAP - 2*BW - PANEL))
+
+Y=$((0 + GAP + PANEL))
+
+# begin defining layouts
+
+# (mostly) fullscreen window
+full() {
+        wtp $GAP $Y $((SW - GAP - 2*BW)) $((SH - GAP)) $PFW
+        export DYTYL_STATUS=full
+}
+
+# default layout (current/master window on left, remaining windows stacked on right)
+default() {
+        # check if there's only one window, and if so, launch in fullscreen
+        if [ $(lsw | wc -l) -eq 1 ]; then
+                full
+                exit
+        fi
+        # put current window in master area
+        wtp $GAP $Y $((MASTER - GAP - 2*BW)) $((SH - GAP)) $PFW
+
+        # and now, stack up all remaining windows on the right
+        X=$((MASTER + GAP))
+        W=$((SW - MASTER - GAP))
+        H=$((SH / MAX - GAP - 2*BW))
+
+        for wid in $(lsw|grep -v $PFW); do
+                wtp $X $Y $W $H $wid
+                Y=$((Y + H + GAP + 2*BW))
+        done
+}
+
+# actually do something
+
+case $1 in
+        default) default ;;
+        full) full ;;
+        *) usage ;;
+esac

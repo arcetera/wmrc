@@ -13,21 +13,19 @@
 while IFS=: read ev wid; do
     case $ev in
         # window creation
-        16) wattr o $wid || {
-                test "$(lsw)" = "$wid" &
-                # cw $wid this is horribly broken and doesn't work
-            }
-            ;;
+        16) wattr o $wid #|| dytyl default
+        ;;
 
         # mapping requests
         19) wattr o $wid || wfw $wid
-        chwb -s 2 -c 515151 $(pfw)
-        #chwb2 -I 515151 -O 393939 -i 3 -o 2 $(pfw) 
+        #cw $wid
+        dytyl default
         ;;
 
         # focus next window when deleting focused window
         18) wattr $(pfw) || wfw prev 2>/dev/null
             test -z "$(lsw)" &
+            dytyl default
             ;;
 
         #entering window
