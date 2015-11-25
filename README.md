@@ -30,7 +30,9 @@ Highly recommended:
 
 If you don't already have them, copy `sxhkdrc.default` to `~/.config/sxhkd/sxhkdrc`, and copy `xinitrc.default` to `~/.xinitrc`.
 
-Uncomment the features you would like in .xinitrc.
+Uncomment the features you would like in `.xinitrc`.
+
+Throw all the scripts somewhere in your PATH. Enjoy.
 
 ## TODO
 
