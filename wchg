@@ -19,13 +19,13 @@ while IFS=: read ev wid; do
         # mapping requests
         19) wattr o $wid || wfw $wid
         #cw $wid
-        dytyl default
+        dytyl $(cat ~/.dytyl_state)
         ;;
 
         # focus next window when deleting focused window
         18) wattr $(pfw) || wfw prev 2>/dev/null
             test -z "$(lsw)" &
-            dytyl default
+            dytyl $(cat ~/.dytyl_state)
             ;;
 
         #entering window

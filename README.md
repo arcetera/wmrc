@@ -10,7 +10,6 @@ _I'll get here eventually..._
 
 * Add a more easy way to configure it and its variables
 * Add more layouts to dytyl
-* Make dytyl keep a state so if changing a layout, wchg does not overwrite it and go to 'default'
 * Make cw work for floating layouts with wchg
 * More complex group status indicator in lemonbar rather than just `mgfw -g $(pfw)`
 * Example xinitrc and sxhkd configuration

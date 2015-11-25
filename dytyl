@@ -16,6 +16,9 @@ usage() {
         exit
 }
 
+# state file (contains the current activated layout)
+STATE_FILE=${STATE_FILE:-~/.dytyl_state}
+
 # default values for gaps
 PANEL=${PANEL:-5}
 GAP=${GAP:-15}
@@ -55,8 +58,14 @@ fscheck() {
         fi
 }
 
+# floating layout (do nothing)
+float() {
+        echo float > $STATE_FILE
+}
+
 # default layout (current/master window on left, remaining windows stacked on right)
 default() {
+        echo default > $STATE_FILE
         fscheck
 
         # put current window in master area
@@ -75,6 +84,7 @@ default() {
 
 # spiral layout (current/master window on left, remaining windows stacked vertically then horizontally then vertically, etc)
 spiral() {
+        echo spiral > $STATE_FILE
         fscheck
 
         # put current window in master area
@@ -125,5 +135,6 @@ case $1 in
         default) default ;;
         spiral) spiral ;;
         full) full ;;
+        float) float ;;
         *) usage ;;
 esac
