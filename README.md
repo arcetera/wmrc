@@ -15,7 +15,7 @@ First off,  you need to compile/install the following:
 * wmutils/opt
 * sxhkd
 * bash
-* dmenu
+* dmenu (or some menu, I use interrobang)
 * Any virtual terminal (suckless `st` is used by default)
 
 Highly recommended:
@@ -44,11 +44,11 @@ Throw all the scripts somewhere in your PATH. Enjoy.
 * Void Linux template and potentially Arch Linux PKGBUILD
 * Makefile
 * Allow for overrides of windows to keep them floating
-* Move windows around in tiling layouts without manipulating as if floating
 
 # Known issues
 
 * Windows suddenly jump around sometimes in tiled layouts
+* When opening a menu (e.g. dmenu, interrobang, etc) the currently focused window becomes the master window
 * Please report any other issues! 
 
 # Pull requests
