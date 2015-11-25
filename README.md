@@ -42,6 +42,18 @@ Throw all the scripts somewhere in your PATH. Enjoy.
 * Make cw work for floating layouts with wchg
 * More complex group status indicator in lemonbar rather than just `mgfw -g $(pfw)`
 * Void Linux template and potentially Arch Linux PKGBUILD
+* Makefile
 * Rewrite it all in something like Lua as bash is not a good language and shell scripting deserves death
 * Allow for overrides of windows to keep them floating
 * A lot of shit :(
+
+# Known issues
+
+* Windows suddenly jump around sometimes in tiled layouts
+* Window resizing should either be entirely disabled or modified for tiled layouts
+* Window geometry should be saved and then brought back when switching from floating to tiling
+* Please report any other issues! 
+
+# Pull requests
+
+If you want to help, please do!
