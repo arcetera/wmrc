@@ -46,16 +46,19 @@ Y=$((0 + GAP + PANEL))
 # (mostly) fullscreen window
 full() {
         wtp $GAP $Y $((SW - GAP - 2*BW)) $((SH - GAP)) $PFW
-        export DYTYL_STATUS=full
 }
 
-# default layout (current/master window on left, remaining windows stacked on right)
-default() {
-        # check if there's only one window, and if so, launch in fullscreen
+fscheck() {
         if [ $(lsw | wc -l) -eq 1 ]; then
                 full
                 exit
         fi
+}
+
+# default layout (current/master window on left, remaining windows stacked on right)
+default() {
+        fscheck
+
         # put current window in master area
         wtp $GAP $Y $((MASTER - GAP - 2*BW)) $((SH - GAP)) $PFW
 
@@ -70,10 +73,57 @@ default() {
         done
 }
 
+# spiral layout (current/master window on left, remaining windows stacked vertically then horizontally then vertically, etc)
+spiral() {
+        fscheck
+
+        # put current window in master area
+        wtp $GAP $Y $((MASTER - GAP - 2*BW)) $((SH - GAP)) $PFW
+
+        # begin stacking windows on right, like default
+        X=$((MASTER + GAP))
+        W=$((SW - MASTER - GAP))
+        H=$((SH - GAP))
+
+        VS=1 # is it on vertical split? at first, yeah!
+        F=1 # first window will be at the right
+
+        PREV="" # previous window
+
+        for wid in $(lsw|grep -v $PFW); do
+            if [ $F -eq 1 ]; then
+                F=0
+                wtp $X $Y $W $H $wid
+                PREV=$wid
+            else
+                if [ $VS -eq 1 ]; then
+                    VS=0
+                    PY=$(wattr y $PREV)
+                    PH=$(wattr h $PREV)
+                    Y=$((PY + PH/2 + GAP))
+                    wtp $X $PY $W $((PH/2)) $PREV
+                    wtp $X $Y $W $((PH/2 - GAP)) $wid
+                    H=$(wattr h $wid)
+                    PREV=$wid
+                else
+                    VS=1
+                    PX=$(wattr x $PREV)
+                    PW=$(wattr w $PREV)
+                    X=$((PX + PW/2 + GAP))
+                    wtp $PX $Y $((PW/2)) $H $PREV
+                    wtp $X $Y $((PW/2 - GAP)) $H $wid
+                    W=$(wattr w $wid)
+                    PREV=$wid
+                fi
+            fi
+        done
+}
+
 # actually do something
 
 case $1 in
         default) default ;;
+        spiral) spiral ;;
         full) full ;;
         *) usage ;;
 esac
