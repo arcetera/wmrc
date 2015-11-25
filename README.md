@@ -44,6 +44,7 @@ Throw all the scripts somewhere in your PATH. Enjoy.
 * Void Linux template and potentially Arch Linux PKGBUILD
 * Makefile
 * Allow for overrides of windows to keep them floating
+* Move windows around in tiling layouts without manipulating as if floating
 
 # Known issues
 
