@@ -1,0 +1,26 @@
+#!/bin/sh
+#                      __      
+#       __          __/\ \__   
+# __  _/\_\    ___ /\_\ \ ,_\  
+#/\ \/'\/\ \ /' _ `\/\ \ \ \/  
+#\/>  </\ \ \/\ \/\ \ \ \ \ \_ 
+# /\_/\_\\ \_\ \_\ \_\ \_\ \__\
+# \//\/_/ \/_/\/_/\/_/\/_/\/__/
+
+# load .Xresources
+[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+
+# uncomment to set wallpaper
+#hsetroot -fill [wallpaper] &
+# uncomment for tearing protection and shadows and such if you use a custom compton.conf
+#compton --backend=glx --vsync=opengl &
+# uncomment for notifications
+# dunst &
+# uncomment for bar
+#bar | lemonbar -d -B#161719 -f candy:size=9 | mksh &
+# REQUIRED, controls keybinds
+sxhkd &
+# REQUIRED, controls actions upon window status changes
+wew | wchg &
+# REQUIRED, launches dummy script so X runs
+exec wmrc
