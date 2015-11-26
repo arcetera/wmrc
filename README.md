@@ -14,7 +14,6 @@ First off,  you need to compile/install the following:
 * wmutils/core
 * wmutils/opt
 * sxhkd
-* bash
 * dmenu (or some menu, I use interrobang)
 * Any virtual terminal (suckless `st` is used by default)
 
