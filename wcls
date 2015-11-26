@@ -1,0 +1,55 @@
+#!/bin/sh
+# 
+# wcls - checks window class
+# (c) arcetera 2015 - wtfpl
+#
+
+usage() {
+  echo "usage: $(basename $0) <command> <wid|unlisted>"
+  exit 1
+}
+
+case $2 in
+  u) lsw_args="-u" ;;
+  o) lsw_args="-o" ;;
+  a) lsw_args="-a" ;;
+esac
+
+case $1 in 
+  c)
+    case $2 in
+      0x*) xprop -id $2 WM_CLASS | cut -d\" -f 2 ;;
+      *) usage ;;
+    esac
+    ;;
+  m) 
+    case $2 in 
+      0x*) xprop -id $2 WM_CLASS | cut -d\" -f 4 ;;
+      *) usage ;;
+    esac
+    ;;
+  ca) 
+    for i in $(seq $(lsw $lsw_args | wc -l)); do
+      wid=$(lsw $lsw_args | sed "$i!d")
+      echo "$wid $(wcls c $wid)"
+    done
+    ;;
+  ma)
+    for i in $(seq $(lsw $lsw_args | wc -l)); do
+      wid=$(lsw $lsw_args | sed "$i!d")
+      echo "$wid $(wcls m $wid)"
+    done
+    ;;
+  name)
+    for i in $(seq $(lsw $lsw_args | wc -l)); do
+      wid=$(lsw $lsw_args | sed "$i!d")
+      echo "$wid $(wcls m $wid)"
+    done
+    ;;
+  a)
+    wcls ca $lsw_args
+    wcls ma $lsw_args
+    wcls name $lsw_args
+    ;;
+  *) usage ;;
+esac

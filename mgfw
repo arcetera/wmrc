@@ -4,10 +4,7 @@
 # (c) arcetera 2015 - wtfpl
 #
 
-# configuration
-
-GRPROOT=/tmp/groups/
-GRPNUM=5
+. ~/.config/wmrc/config
 
 usage() {
   echo "$(basename $0) [-adsth <gid>]"
@@ -48,8 +45,8 @@ togggrp() {
 
   [ -z "$wid" ] && return
   wattr m $wid \
-  && hide_group $1 \
-  || show_group $1
+  && hidegrp $1 \
+  || showgrp $1
 }
 
 cgrps() {
@@ -67,9 +64,9 @@ cgrps
 
 while getopts ":a:wd:gm:t:h:" opt; do
   case $opt in
-    a) addtgrp `pfw` $OPTARG ;;
-    d) removefgrp `pfw` $OPTARG ;;
-    g) findgrp `pfw` ;;
+    a) addtgrp $(pfw) $OPTARG ;;
+    d) removefgrp $(pfw) $OPTARG ;;
+    g) findgrp $(pfw) ;;
     s) showgrp $OPTARG ;;
     t) togggrp $OPTARG ;;
     h) hidegrp $OPTARG ;;
@@ -77,5 +74,4 @@ while getopts ":a:wd:gm:t:h:" opt; do
   esac
 done
 
-# in case no argument is given, display the whole tree
 [ $# -eq 0 ] && tree --noreport $GRPROOT

@@ -4,16 +4,12 @@
 # (c) arcetera 2015 - wtfpl
 #
 
+. ~/.config/wmrc/config
+
 usage() {
   echo "usage: $(basename $0) <default|full|spiral|float>"
   exit
 }
-
-# configuration
-
-STATE_FILE=${STATE_FILE:-~/.dytyl_state}
-PANEL=${PANEL:-5}
-GAP=${GAP:-15}
 
 PFW=$(pfw)
 BW=$(wattr b $PFW)

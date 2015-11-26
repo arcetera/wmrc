@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# wmrc config - global variables for wmrc
+# (c) arcetera 2015 - wtfpl
+#
+
+# required (you probably don't want to change these)
+
+WID=$(pfw)
+WW=$(wattr w $WID)
+WH=$(wattr h $WID)
+CUR=${2:-$(pfw)}
+ROOT=$(lsw -r)
+SW=$(wattr w $ROOT)
+SH=$(wattr h $ROOT)
+BWIDTH=$(wattr b $CUR)
+PFW=$(pfw)
+
+# files used for storing things like window geometry, etc (be VERY careful with these)
+
+FSFILE=${FSFILE:-~/.fwin}                ## stores window geometry for fullscreen
+GRPROOT=/tmp/groups                      ## where groups are stored
+STATE_FILE=${STATE_FILE:-~/.dytyl_state} ## stores the current layout
+
+# groups
+
+GRPNUM=5 ## number of groups
+
+# tiling
+
+PANEL=${PANEL:-5} ## leaves space for the bar/panel
+GAP=${GAP:-15}    ## how large the gaps should be
+
+# borders
+
+BW=${BW:-2}                    ## border width
+ACTIVE=${ACTIVE:-0x515151}     ## border color of active window
+INACTIVE=${INACTIVE:-0xa09f93} ## border color of inactive window

@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# setb - set border of a window
+# (c) arcetera 2015 - wtfpl
+#
+
+. ~/.config/wmrc/config
+
+wattr $2 || return
+wattr o $2 && return
+
+[ "$(wattr xywh $2)" = "$(wattr xywh $ROOT)" ] && return
+
+case $1 in
+  active) chwb -s $BW -c $ACTIVE $2 ;;
+  inactive) chwb -s $BW -c $INACTIVE $2 ;;
+esac

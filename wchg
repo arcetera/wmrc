@@ -5,18 +5,33 @@
 #
 
 while IFS=: read ev wid; do
-    case $ev in
-        16) dytyl $(cat ~/.dytyl_state) ;;
+  case $ev in
+    4) 
+      if ! wattr o $wid; then
+        wfw $wid
+      fi
+      ;;
 
-        19) wattr o $wid || wfw $wid
-              dytyl $(cat ~/.dytyl_state)
-              ;;
+    16) 
+      if ! wattr o $wid; then
+        wtest $wid
+      fi
+      ;;
 
-        18) wattr $(pfw) || wfw prev 2>/dev/null
-              [ -z "$(lsw)"] &
-              dytyl $(cat ~/.dytyl_state)
-              ;;
+    19) 
+      if ! wattr o $wid; then
+        wfw $wid
+      fi
+      ;;
 
-        7) wattr o $wid || wfw $wid ;;
-    esac
+    18) 
+      wattr $(pfw) || wfw prev 2>/dev/null
+      ;;
+
+    7) 
+      if ! wattr o $wid; then
+        wfw $wid 
+      fi
+      ;;
+  esac
 done

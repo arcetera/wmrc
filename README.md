@@ -32,23 +32,20 @@ If you don't already have them, copy `sxhkdrc.default` to `~/.config/sxhkd/sxhkd
 
 Uncomment the features you would like in `.xinitrc`.
 
+Copy `config.default` to `~/.config/wmrc/config`.
+
 Throw all the scripts somewhere in your PATH. Enjoy.
 
 ## TODO
 
-* Add a more easy way to configure it and its variables
 * User guide, good documentation
 * Add more layouts to dytyl
-* Make cw work for floating layouts with wchg
-* More complex group status indicator in lemonbar rather than just `mgfw -g $(pfw)`
-* Void Linux template and potentially Arch Linux PKGBUILD
+* Void Linux template, CRUX port, Arch Linux PKGBUILD
 * Makefile
-* No bash, pure POSIX compliance
 
 # Known issues
 
-* Windows suddenly jump around sometimes in tiled layouts
-* When opening a menu (e.g. dmenu, interrobang, etc) the currently focused window becomes the master window
+* Windows open with the same geometry of the currently focused window
 * Please report any other issues! 
 
 # Pull requests

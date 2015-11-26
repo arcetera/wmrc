@@ -3,36 +3,11 @@
 # wfw - window focus wrapper
 # (c) arcetera 2015 - wtfpl
 
-# configuration
-
-BW=${BW:-2}                    # border width
-#BWI=${BWI:-3}                 # inner border width
-#BWO=${BWO:-2}                 # outer border width
-ACTIVE=${ACTIVE:-0x515151}     # active border color
-INACTIVE=${INACTIVE:-0xa09f93} # inactive border color
-#OUTER=${OUTER--0x393939}      # outer border color
-
-# code
-
-CUR=$(pfw)
+. ~/.config/wmrc/config
 
 usage() {
     echo "usage: $(basename $0) <next|prev|wid>" >&2
     exit 1
-}
-
-setborder() {
-    ROOT=$(lsw -r)
-
-    wattr $2 || return
-    wattr o $2 && return
-
-    [ "$(wattr xywh $2)" = "$(wattr xywh $ROOT)" ] && return
-
-    case $1 in
-        active)   chwb -s $BW -c $ACTIVE $2 ;;
-        inactive) chwb -s $BW -c $INACTIVE $2 ;;
-    esac
 }
 
 case $1 in
@@ -46,5 +21,5 @@ esac
 
 chwso -r $wid           
 wtf $wid                
-setborder active $wid   
-setborder inactive $CUR 
+setb active $wid   
+setb inactive $CUR 

@@ -1,0 +1,21 @@
+#!/bin/sh               
+#  
+# crnr - move a window to a corner
+# (c) arcetera 2015 - wtfpl
+#
+
+. ~/.config/wmrc/config
+
+X=0
+Y=0
+
+case $1 in
+  tr) X=$((SW - WW - BWIDTH*2)) ;;
+  bl) Y=$((SH - WH - BWIDTH*2)) ;;
+  br) 
+    X=$((SW - WW - BWIDTH*2))
+    Y=$((SH - WH - BWIDTH*2))
+    ;;
+esac
+
+wtp $X $Y $WW $WH $CUR

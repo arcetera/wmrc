@@ -5,8 +5,8 @@
 #
 
 if [ -z "$1" ]; then
-        echo "usage: $(basename $0) <wid>"
-        exit
+  echo "usage: $(basename $0) <wid>"
+  exit
 fi
 
 WID=$(pfw)

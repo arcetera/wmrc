@@ -8,11 +8,11 @@ super + Return
 
 # move windows
 super + {Left,Down,Up,Right}
-        grep '\default\|spiral\)' >/dev/null ~/.dytyl_state || wmv {-20 0, 0 20, 0 -20, 20 0} $(pfw)
+        wmv {-20 0, 0 20, 0 -20, 20 0} $(pfw)
 
 # resize windows
 super + alt + {Left,Down,Up,Right}
-        grep '\default\|spiral\)' >/dev/null ~/.dytyl_state || wrs {-20 0, 0 20, 0 -20, 20 0} $(pfw)
+        wrs {-20 0, 0 20, 0 -20, 20 0} $(pfw)
 
 # switch between windows quickly
 super + Tab
@@ -49,11 +49,11 @@ super + {h,j,k,l}
 
 # puts window in a corner
 super + shift + {q,w,a,s}
-        grep '\(default\|spiral\)' >/dev/null ~/.dytyl_state || crnr {tl,tr,bl,br}
+        crnr {tl,tr,bl,br}
 
 # centers window
 super + shift + space
-        grep '\(default\|spiral\)' >/dev/null ~/.dytyl_state || cw $(pfw)
+        cw $(pfw)
 
 # switches between different layouts
 super + shift + {Left,Right,Up}

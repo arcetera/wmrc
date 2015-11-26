@@ -4,8 +4,7 @@
 # (c) arcetera 2015 - wtfpl
 #
 
-## stores previous geometry of window
-FSFILE=${FSFILE:-~/.fwin}
+. ~/.config/wmrc/config
 
 usage() {
   echo "usage: $(basename $0) <wid>"

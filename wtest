@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# wtest - perform actions based on different windows
+# (c) arcetera 2015 - wtfpl
+#
+
+usage() {
+  echo "usage: $(basename $0) <wid>"
+  exit 1
+}
+
+if [ -z $1 ]; then
+  usage
+fi
+
+wid=$1
+windowc=$(wcls c $wid)
+windowm=$(wcls m $wid)
+cw $wid
