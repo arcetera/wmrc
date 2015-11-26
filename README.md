@@ -20,11 +20,9 @@ First off,  you need to compile/install the following:
 
 Highly recommended:
 
-* lemonbar - required for bar
+* lemonbar
 * dash - insanely fast posix-compliant shell. symlink to /bin/sh for best performance in most scripts
-* mpd - `bar`'s music controls and nowplaying use it. you can remove it from the bar script, however
 * hsetroot - wallpaper
-* candy font - used in `bar` and sxhkd configs, change if you don't want it
 * compton - tearing protection and shadows and such
 * dunst - notification daemon
 

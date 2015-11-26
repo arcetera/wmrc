@@ -9,8 +9,6 @@
 #compton --backend=glx --vsync=opengl &
 # uncomment for notifications
 # dunst &
-# uncomment for bar
-#bar | lemonbar -d -B#161719 -f candy:size=9 | mksh &
 # REQUIRED, controls keybinds
 sxhkd &
 # REQUIRED, controls actions upon window status changes
