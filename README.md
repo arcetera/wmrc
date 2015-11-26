@@ -1,6 +1,6 @@
 # wmrc
 
-A simple WM powered by wmutils, written in bash.
+A simple WM powered by wmutils, comprised of pure POSIX-compliant shell scripts.
 
 ## Installation
 
