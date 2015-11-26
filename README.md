@@ -43,7 +43,7 @@ Throw all the scripts somewhere in your PATH. Enjoy.
 * More complex group status indicator in lemonbar rather than just `mgfw -g $(pfw)`
 * Void Linux template and potentially Arch Linux PKGBUILD
 * Makefile
-* Allow for overrides of windows to keep them floating
+* No bash, pure POSIX compliance
 
 # Known issues
 

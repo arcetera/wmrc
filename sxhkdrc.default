@@ -65,4 +65,4 @@ super + shift + space
 
 # switches between different layouts
 super + shift + {Left,Right,Up}
-        dytyl {default,spiral,float} 
+        echo "$NOTILE" | grep -q "$(wname $WID)" || dytyl {default,spiral,float} 
