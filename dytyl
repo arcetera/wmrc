@@ -1,140 +1,112 @@
 #!/bin/sh
-#  __          __            ___      
-# /\ \        /\ \__        /\_ \     
-# \_\ \  __  _\ \ ,_\ __  __\//\ \    
-# /'_` \/\ \/\ \ \ \//\ \/\ \ \ \ \   
-#/\ \L\ \ \ \_\ \ \ \\ \ \_\ \ \_\ \_ 
-#\ \___,_\/`____ \ \__\/`____ \/\____\
-# \/__,_ /`/___/> \/__/`/___/> \/____/
-#            /\___/       /\___/      
-#            \/__/        \/__/   
-# dynamic tiling 
+#
+# dytyl - dynamic tiling script
+# (c) arcetera 2015 - wtfpl
+#
 
-# usage function
 usage() {
-        echo "usage: $(basename $0) <default|full>"
-        exit
+  echo "usage: $(basename $0) <default|full|spiral|float>"
+  exit
 }
 
-# state file (contains the current activated layout)
-STATE_FILE=${STATE_FILE:-~/.dytyl_state}
+# configuration
 
-# default values for gaps
+STATE_FILE=${STATE_FILE:-~/.dytyl_state}
 PANEL=${PANEL:-5}
 GAP=${GAP:-15}
 
-# get current window id and its borderwidth
 PFW=$(pfw)
 BW=$(wattr b $PFW)
-
-# get root window's size
 ROOT=$(lsw -r)
 SW=$(wattr w $ROOT)
 SH=$(wattr h $ROOT)
-
-# get the master area
-MASTER=$((SW/2))
-
-# get the number of windows to put in the stacking area
+VERT_MASTER=$((SW/2))
+HORIZ_MASTER=$((SH/2))
 MAX=$(lsw|grep -v $PFW|wc -l)
-
-# calculate usable screen size (without borders and gaps)
 SW=$((SW - GAP - 2*BW))
 SH=$((SH - GAP - 2*BW - PANEL))
-
 Y=$((0 + GAP + PANEL))
+X=$((0 + GAP + PANEL)) 
 
-# begin defining layouts
-
-# (mostly) fullscreen window
 full() {
-        wtp $GAP $Y $((SW - GAP - 2*BW)) $((SH - GAP)) $PFW
+  wtp $GAP $Y $((SW - GAP - 2*BW)) $((SH - GAP)) $PFW
 }
 
 fscheck() {
-        if [ $(lsw | wc -l) -eq 1 ]; then
-                full
-                exit
-        fi
+  if [ $(lsw | wc -l) -eq 1 ]; then
+    full
+    exit
+  fi
 }
 
-# floating layout (do nothing)
 float() {
-        echo float > $STATE_FILE
+  echo float > $STATE_FILE 
 }
 
-# default layout (current/master window on left, remaining windows stacked on right)
 default() {
-        echo default > $STATE_FILE
-        fscheck
+  echo default > $STATE_FILE 
+  fscheck
 
-        # put current window in master area
-        wtp $GAP $Y $((MASTER - GAP - 2*BW)) $((SH - GAP)) $PFW
+  wtp $GAP $Y $((VERT_MASTER - GAP - 2*BW)) $((SH - GAP)) $PFW
 
-        # and now, stack up all remaining windows on the right
-        X=$((MASTER + GAP))
-        W=$((SW - MASTER - GAP))
-        H=$((SH / MAX - GAP - 2*BW))
+  X=$((VERT_MASTER + GAP))
+  W=$((SW - VERT_MASTER - GAP))
+  H=$((SH / MAX - GAP - 2*BW))
 
-        for wid in $(lsw|grep -v $PFW); do
-                wtp $X $Y $W $H $wid
-                Y=$((Y + H + GAP + 2*BW))
-        done
+  for wid in $(lsw|grep -v $PFW); do
+    wtp $X $Y $W $H $wid
+    Y=$((Y + H + GAP + 2*BW))
+  done
 }
 
-# spiral layout (current/master window on left, remaining windows stacked vertically then horizontally then vertically, etc)
 spiral() {
-        echo spiral > $STATE_FILE
-        fscheck
+  echo spiral > $STATE_FILE 
+  fscheck
 
-        # put current window in master area
-        wtp $GAP $Y $((MASTER - GAP - 2*BW)) $((SH - GAP)) $PFW
+  wtp $GAP $Y $((VERT_MASTER - GAP - 2*BW)) $((SH - GAP)) $PFW
 
-        # begin stacking windows on right, like default
-        X=$((MASTER + GAP))
-        W=$((SW - MASTER - GAP))
-        H=$((SH - GAP))
+  X=$((VERT_MASTER + GAP))
+  W=$((SW - VERT_MASTER - GAP))
+  H=$((SH - GAP))
 
-        VS=1 # is it on vertical split? at first, yeah!
-        F=1 # first window will be at the right
+  VS=1 
+  F=1
 
-        PREV="" # previous window
+  PREV=""
 
-        for wid in $(lsw|grep -v $PFW); do
-            if [ $F -eq 1 ]; then
-                F=0
-                wtp $X $Y $W $H $wid
-                PREV=$wid
-            else
-                if [ $VS -eq 1 ]; then
-                    VS=0
-                    PY=$(wattr y $PREV)
-                    PH=$(wattr h $PREV)
-                    Y=$((PY + PH/2 + GAP))
-                    wtp $X $PY $W $((PH/2)) $PREV
-                    wtp $X $Y $W $((PH/2 - GAP)) $wid
-                    H=$(wattr h $wid)
-                    PREV=$wid
-                else
-                    VS=1
-                    PX=$(wattr x $PREV)
-                    PW=$(wattr w $PREV)
-                    X=$((PX + PW/2 + GAP))
-                    wtp $PX $Y $((PW/2)) $H $PREV
-                    wtp $X $Y $((PW/2 - GAP)) $H $wid
-                    W=$(wattr w $wid)
-                    PREV=$wid
-                fi
-            fi
-        done
+  for wid in $(lsw|grep -v $PFW); do
+    if [ $F -eq 1 ]; then
+      F=0
+      wtp $X $Y $W $H $wid
+      PREV=$wid
+    else
+      if [ $VS -eq 1 ]; then
+        VS=0
+        PY=$(wattr y $PREV)
+        PH=$(wattr h $PREV)
+        Y=$((PY + PH/2 + GAP/2))
+        wtp $X $PY $W $((PH/2 - GAP/2)) $PREV
+        wtp $X $Y $W $((PH/2 - GAP/2)) $wid
+        H=$(wattr h $wid)
+        PREV=$wid
+      else
+        VS=1
+        PX=$(wattr x $PREV)
+        PW=$(wattr w $PREV)
+        X=$((PX + PW/2 + GAP/2))
+        wtp $PX $Y $((PW/2 - GAP/2)) $H $PREV
+        wtp $X $Y $((PW/2 - GAP/2)) $H $wid
+        W=$(wattr w $wid)
+        PREV=$wid
+      fi
+    fi
+  done
 }
-
-# actually do something
 
 case $1 in
-        default) default ;;
-        spiral) spiral ;;
-        full) full ;;
-        float) float ;;
-        *) usage ;;
+  default) default ;;
+  spiral) spiral ;;
+  full) full ;;
+  float) float ;;
+  *) usage ;;
 esac

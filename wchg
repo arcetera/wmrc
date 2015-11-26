@@ -1,34 +1,22 @@
 #!/bin/sh
-#                  __                  
-#                 /\ \                 
-# __  __  __   ___\ \ \___      __     
-#/\ \/\ \/\ \ /'___\ \  _ `\  /'_ `\   
-#\ \ \_/ \_/ /\ \__/\ \ \ \ \/\ \L\ \  
-# \ \___x___/\ \____\\ \_\ \_\ \____ \ 
-#  \/__//__/  \/____/ \/_/\/_/\/___L\ \
-#                               /\____/
-#                               \_/__/ 
-# wchg - Window ChaNGe - perform actions when window status changes
+#
+# wchg - perform actions when window status changes
+# (c) arcetera 2015 - wtfpl
+#
 
 while IFS=: read ev wid; do
     case $ev in
-        # window creation
-        16) wattr o $wid #|| dytyl default
-        ;;
+        16) dytyl $(cat ~/.dytyl_state) ;;
 
-        # mapping requests
         19) wattr o $wid || wfw $wid
-        #cw $wid
-        dytyl $(cat ~/.dytyl_state)
-        ;;
+              dytyl $(cat ~/.dytyl_state)
+              ;;
 
-        # focus next window when deleting focused window
         18) wattr $(pfw) || wfw prev 2>/dev/null
-            test -z "$(lsw)" &
-            dytyl $(cat ~/.dytyl_state)
-            ;;
+              [ -z "$(lsw)"] &
+              dytyl $(cat ~/.dytyl_state)
+              ;;
 
-        #entering window
         7) wattr o $wid || wfw $wid ;;
     esac
 done

@@ -1,11 +1,9 @@
 #!/bin/sh 
-# __  __  __   ___ ___   _ __  ___   
-#/\ \/\ \/\ \/' __` __`\/\`'__/'___\ 
-#\ \ \_/ \_/ /\ \/\ \/\ \ \ \/\ \__/ 
-# \ \___x___/\ \_\ \_\ \_\ \_\ \____\
-#  \/__//__/  \/_/\/_/\/_/\/_/\/____/ 
-# dummy script that does nothing so you can run it in .xinitrc
+#
+# wmrc - dummy script
+# (c) arcetera 2015 - wtfpl
+#
 
 while true; do
-        sleep 1
+  sleep 1
 done
