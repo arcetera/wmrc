@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# blrbg - blurs current background
+# (c) arcetera 2015 - wtfpl
+#
+
+. ~/.config/wmrc/config
+
+hsetroot -fill $WALL -blur ${1:-$BLUR}

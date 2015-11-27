@@ -2,6 +2,10 @@
 
 A simple WM powered by wmutils, comprised of pure POSIX-compliant shell scripts.
 
+## Appearance
+
+![wmrc](img/wmrc.png)
+
 ## Installation
 
 A simple, automated method of installation will be added later (Void template, CRUX port, Arch PKGBUILD), but not yet. Hold on.

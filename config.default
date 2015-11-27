@@ -26,6 +26,11 @@ STATE_FILE=${STATE_FILE:-~/.dytyl_state} ## stores the current layout
 
 GRPNUM=5 ## number of groups
 
+# blur
+
+WALL=~/.wall.png ## wallpaper to blur, should be the same as the currently set wallpaper
+BLUR=2           ## blur radius. move up for more intense blur, move down for less intense blur.
+
 # tiling
 
 PANEL=${PANEL:-5} ## leaves space for the bar/panel
