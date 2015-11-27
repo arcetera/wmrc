@@ -19,7 +19,7 @@ First off,  you need to compile/install the following:
 * wmutils/opt
 * sxhkd
 * dmenu (or some menu, I use interrobang)
-* Any virtual terminal (suckless `st` is used by default)
+* Any virtual terminal (if your terminal is not properly detected by `tln`, you will have to edit `tln`)
 
 Highly recommended:
 
