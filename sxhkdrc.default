@@ -4,7 +4,7 @@ super + d
 
 # pop a term
 super + Return
-        st
+        tln
 
 # move windows
 super + {Left,Down,Up,Right}

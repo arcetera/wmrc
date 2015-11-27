@@ -47,6 +47,7 @@ Throw all the scripts somewhere in your PATH. Enjoy.
 # Known issues
 
 * Windows open with the same geometry of the currently focused window
+* cw only works when a second window is opened
 * Please report any other issues! 
 
 # Pull requests
